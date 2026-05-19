@@ -175,7 +175,7 @@
                                     url: PROXIES[proxyIdx]
                                 },
                                 hash: "#" + data[0],
-                                name: "[#cooked]",
+                                name: "[E][?]feeds,nukes&codes",
                                 stats: [2,2,4,9,3,9,9,0,0,0],
                                 type: "follow",
                                 token: "follow-8fe6ca",
