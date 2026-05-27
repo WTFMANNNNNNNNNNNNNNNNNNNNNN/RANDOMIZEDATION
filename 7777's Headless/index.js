@@ -714,6 +714,9 @@
             trigger.keydown(code);
             setTimeout(() => trigger.keyup(code), 50);
           }
+        },
+        chat: (str) => {
+          if (controller && controller.chat) controller.chat(str);
         }
       };
 
@@ -1579,6 +1582,16 @@
       target.shift = message.shift;
     } else if (message.type == 'tankselect') {
       target.tank = message.tank;
+    } else if (message.type === 'chat') {
+      // Make the bot say something in-game chat
+      if (currentBotInterface && currentBotInterface.chat) {
+        currentBotInterface.chat(String(message.text || '').slice(0, 120));
+      }
+    } else if (message.type === 'chat') {
+      // Make a bot say something in-game
+      if (currentBotInterface && currentBotInterface.chat) {
+        currentBotInterface.chat(String(message.text || '').slice(0, 120));
+      }
     } else if (message.type == 'destroy') {
       console.log("why devastatee");
       devastate();
