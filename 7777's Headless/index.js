@@ -23,17 +23,34 @@
   // --- WORKER PROCESS (Bot logic) ---
   let isPaused = false;
   let currentBotInterface = {};
-  let devastate = () => {};
-  let target = {};
+  let devastate = () => { };
+  let target = {
+    tank: 'basic',
+    followMouse: true,
+    feed: false,
+    shift: false,
+    mouseDown: false,
+    rMouseDown: false,
+    autofire: false,
+    autospin: false,
+    manualMode: false,
+    manualX: 0,
+    manualY: 0,
+    chatSpam: ""
+  };
+  let lastChatAt = 0;
+
+  let lastAutofire = false;
+  let lastAutospin = false;
 
   //const names = fs.readFileSync("names.txt").toString().split("\n");
 
   const builds = {
     basic: "0/4/6/7/7/7/7/4",
     triangle: "0/2/3/7/7/7/7/7",
-    smasher: "9/12/0/0/0/0/0/12/3/6"
+    smasher: "12/12/0/0/0/0/3/12/2/1"
   };
-  
+
   const upgrade_map = {
     1: 50,
     2: 90,
@@ -50,7 +67,7 @@
     // OTHER
     pursuer: {
       path: "uyiy",
-      build: "8/9/0/0/0/0/0/9/8/8"
+      build: "0/0/0/0/0/0/0/9/0/0"
     },
     anni: {
       path: "kyu",
@@ -70,7 +87,7 @@
     },
     octo: {
       path: "hyyc",
-      build: builds.basic
+      build: "3/3/0/7/8/7/9/3/1/1"
     },
     autogunner: {
       path: "iiy",
@@ -216,9 +233,9 @@
       path: [[2, 3], "j", "j"],
       build: "8/10/12/0/0/0/0/12"
     },
-    phys: {
+    physician: {
       path: [[2, 3], [3, 3]],
-      build: builds.smasher
+      build: "0/12/0/0/0/0/12/12/3/3"
     },
 
     // DPS
@@ -236,7 +253,7 @@
     },
     lorry: {
       path: "ihyy",
-      build: builds.basic
+      build: "3/3/0/7/8/7/9/3/1/1"
     },
 
     // BUILDERS
@@ -577,6 +594,242 @@
     griffin: {
       path: "kkh",
       build: builds.triangle
+    },
+
+    // BASIC & TREE TANKS
+    twin: {
+      path: "y",
+      build: builds.basic
+    },
+    doubletwin: {
+      path: "yy",
+      build: builds.basic
+    },
+    tripleshot: {
+      path: "yu",
+      build: builds.basic
+    },
+    sniper: {
+      path: "u",
+      build: builds.basic
+    },
+    machinegun: {
+      path: "i",
+      build: builds.basic
+    },
+    sprayer: {
+      path: "ih",
+      build: builds.basic
+    },
+    redistributor: {
+      path: "ihy",
+      build: builds.basic
+    },
+    flankguard: {
+      path: "h",
+      build: builds.basic
+    },
+    hexatank: {
+      path: "hy",
+      build: builds.basic
+    },
+    octotank: {
+      path: "hyy",
+      build: "3/3/0/7/8/7/9/3/1/1"
+    },
+    hexatrapper: {
+      path: "hyi",
+      build: builds.basic
+    },
+    triangle: {
+      path: "hu",
+      build: builds.basic
+    },
+    booster: {
+      path: "huu",
+      build: builds.triangle
+    },
+    falcon: {
+      path: "hui",
+      build: builds.triangle
+    },
+    auto3: {
+      path: "hui",
+      build: builds.basic
+    },
+    auto4: {
+      path: "huii",
+      build: builds.basic
+    },
+    banshee: {
+      path: "huih",
+      build: builds.basic
+    },
+    trapguard: {
+      path: "hh",
+      build: builds.basic
+    },
+    buchwhacker: {
+      path: "hhy",
+      build: builds.basic
+    },
+    gunnertrapper: {
+      path: "hhu",
+      build: builds.basic
+    },
+    conqueror: {
+      path: "hhj",
+      build: builds.basic
+    },
+    bulwark: {
+      path: "hhk",
+      build: builds.basic
+    },
+    parapet: {
+      path: "hhjy",
+      build: "3/3/0/7/8/7/8/5/1/0"
+    },
+    tritrapper: {
+      path: "hj",
+      build: builds.basic
+    },
+    fortress: {
+      path: "hjy",
+      build: builds.basic
+    },
+    septatrapper: {
+      path: "hji",
+      build: builds.basic
+    },
+    tripletwin: {
+      path: "hk",
+      build: builds.basic
+    },
+    director: {
+      path: "j",
+      build: builds.basic
+    },
+    pounder: {
+      path: "k",
+      build: builds.basic
+    },
+    automingler: {
+      path: "hykj",
+      build: "2/3/2/7/8/7/9/3/1/0"
+    },
+    mingler: {
+      path: "hyk",
+      build: builds.basic
+    },
+    underseer: {
+      path: "ji",
+      build: builds.basic
+    },
+    rocketeer: {
+      path: "khk",
+      build: builds.basic
+    },
+    destroyer: {
+      path: "ky",
+      build: builds.basic
+    },
+    launcher: {
+      path: "kh",
+      build: builds.basic
+    },
+    gale: {
+      path: "hyyi",
+      build: "3/3/0/7/8/7/9/3/1/1"
+    },
+
+    gunner: {
+      path: "ii",
+      build: builds.basic
+    },
+    nailgun: {
+      path: "iiu",
+      build: builds.basic
+    },
+    pincer: {
+      path: "iiuk",
+      build: builds.basic
+    },
+    nona: {
+      path: "hjiy",
+      build: builds.basic
+    },
+    septamachine: {
+      path: "hjiu",
+      build: builds.basic
+    },
+    assassin: {
+      path: "uy",
+      build: builds.basic
+    },
+    stalker: {
+      path: "uyi",
+      build: builds.basic
+    },
+    healer: {
+      path: "x",
+      build: builds.basic
+    },
+
+    overseer: {
+      path: "jy",
+      build: builds.basic
+    },
+    cruiser: {
+      path: "ju",
+      build: builds.basic
+    },
+    spawner: {
+      path: "jh",
+      build: builds.basic
+    },
+    directordrive: {
+      path: "jj",
+      build: builds.basic
+    },
+    honcho: {
+      path: "jk",
+      build: builds.basic
+    },
+    manager: {
+      path: "jx",
+      build: builds.basic
+    },
+    foundry: {
+      path: "jh",
+      build: builds.basic
+    },
+    topbanana: {
+      path: "jh",
+      build: builds.basic
+    },
+    shopper: {
+      path: "jh k",
+      build: builds.basic
+    },
+    megaspawner: {
+      path: "jhi",
+      build: builds.basic
+    },
+    ultraspawner: {
+      path: "jhiy",
+      build: builds.basic
+    },
+    chemist: {
+      path: [[2, 3], [1, 2], [1, 2]],
+      build: "3/3/0/7/8/7/9/3/1/1"
+    },
+    jerker: {
+      path: [[2, 1], [3, 1], [2, 3], [3, 3]],
+      build: builds.smasher
+    },
+    limpet: {
+      path: [[2, 3], [1, 2], [1, 1]],
+      build: builds.smasher
     }
   };
 
@@ -714,9 +967,6 @@
             trigger.keydown(code);
             setTimeout(() => trigger.keyup(code), 50);
           }
-        },
-        chat: (str) => {
-          if (controller && controller.chat) controller.chat(str);
         }
       };
 
@@ -753,61 +1003,72 @@
           }
         })
       }
-      const handleListener = function (type, f) {
-        listeners[type] = f
+      const elementListeners = new WeakMap();
+      const allElements = [];
+      const handleListener = function (type, f, element) {
+        if (!element) return;
+        if (!elementListeners.has(element)) {
+          elementListeners.set(element, {});
+        }
+        const listeners = elementListeners.get(element);
+        if (!listeners[type]) {
+          listeners[type] = [];
+        }
+        listeners[type].push(f);
       }
-      const listeners = {}
+      const broadcastEvent = (type, event) => {
+        const targets = [global.window, global.document, ...allElements];
+        for (const target of targets) {
+          const listeners = elementListeners.get(target);
+          if (listeners && listeners[type]) {
+            for (const f of listeners[type]) {
+              try { f.call(target, event); } catch (e) { }
+            }
+          }
+        }
+      };
+
       trigger = {
         mousemove: function (clientX, clientY) {
-          if (listeners.mousemove) {
-            listeners.mousemove({
-              isTrusted: true,
-              clientX: clientX,
-              clientY: clientY
-            })
-          }
+          broadcastEvent('mousemove', {
+            isTrusted: true,
+            clientX: clientX,
+            clientY: clientY
+          });
         },
         mousedown: function (clientX, clientY, button) {
-          if (listeners.mousedown) {
-            listeners.mousedown({
-              isTrusted: true,
-              clientX: clientX,
-              clientY: clientY,
-              button: button
-            })
-          }
+          broadcastEvent('mousedown', {
+            isTrusted: true,
+            clientX: clientX,
+            clientY: clientY,
+            button: button
+          });
         },
         mouseup: function (clientX, clientY, button) {
-          if (listeners.mouseup) {
-            listeners.mouseup({
-              isTrusted: true,
-              clientX: clientX,
-              clientY: clientY,
-              button: button
-            })
-          }
+          broadcastEvent('mouseup', {
+            isTrusted: true,
+            clientX: clientX,
+            clientY: clientY,
+            button: button
+          });
         },
         keydown: function (code, repeat) {
-          if (listeners.keydown) {
-            listeners.keydown({
-              isTrusted: true,
-              code: code,
-              key: '',
-              repeat: repeat || false,
-              preventDefault: function () { }
-            })
-          }
+          broadcastEvent('keydown', {
+            isTrusted: true,
+            code: code,
+            key: '',
+            repeat: repeat || false,
+            preventDefault: function () { }
+          });
         },
         keyup: function (code, repeat) {
-          if (listeners.keyup) {
-            listeners.keyup({
-              isTrusted: true,
-              code: code,
-              key: '',
-              repeat: repeat || false,
-              preventDefault: function () { }
-            })
-          }
+          broadcastEvent('keyup', {
+            isTrusted: true,
+            code: code,
+            key: '',
+            repeat: repeat || false,
+            preventDefault: function () { }
+          });
         }
       }
 
@@ -842,10 +1103,25 @@
 
       let inputs = [], setValue = function (str) {
         for (let i = 0, l = inputs.length; i < l; i++) {
-          inputs[i].value = str
+          const input = inputs[i];
+          input.value = str;
+          const listeners = elementListeners.get(input);
+          if (listeners) {
+            const event = { target: input, isTrusted: true };
+            if (listeners.input) {
+              for (const f of listeners.input) {
+                try { f.call(input, event); } catch (e) { }
+              }
+            }
+            if (listeners.change) {
+              for (const f of listeners.change) {
+                try { f.call(input, event); } catch (e) { }
+              }
+            }
+          }
         }
       }
-      let position = [0, 0, 5], died = false, died2 = false, ignore = false, disconnected = false, connected = false, inGame = false, upgrade = false, reconnectCount = 0;
+      let position = [0, 0, 5], died = false, died2 = false, ignore = false, disconnected = false, connected = false, inGame = false, upgrade = false, reconnectCount = 0, isUpgrading = false;
 
       let innerWidth = global.window.innerWidth = 500
       let innerHeight = global.window.innerHeight = 500
@@ -877,9 +1153,11 @@
             let a = Array.from(arguments)
             if (this.font === 'bold 7px Ubuntu' && this.fillStyle === 'rgb(255,255,255)') {
               if (a[0] === `You have spawned! Welcome to the game.`) {
-                hasJoined = firstJoin = true
+                hasJoined = firstJoin = true;
+                position[0] = position[1] = 0; // Reset internal tracking on spawn
               } else if (a[0] === 'You have traveled through a portal!') {
-                hasJoined = true
+                hasJoined = true;
+                position[0] = position[1] = 0;
               }
               if (!died && (
                 (a[0].startsWith('The server was ') && a[0].endsWith('% active'))
@@ -997,6 +1275,7 @@
           if (element.tag === 'input') {
             inputs.push(element);
           }
+          allElements.push(element);
 
           if (options) {
             Object.assign(element, options);
@@ -1065,27 +1344,34 @@
         mouseUp: function (button) {
           trigger.mouseup(controller.x, controller.y, button)
         },
-        click: function (x, y) {
-          trigger.mousedown(x, y, 0)
-          trigger.mouseup(x, y, 0)
+        click: async function (x, y) {
+          trigger.mousedown(x, y, 0);
+          await new Promise(r => setTimeout(r, 50)); // Tiny delay for click registration
+          trigger.mouseup(x, y, 0);
         },
         press: function (code) {
           trigger.keydown(code)
           trigger.keyup(code)
         },
         chat: function (str) {
-          controller.press('Enter')
-          global.performance.time += 90
-          a()
-          controller.press('Enter')
-          global.performance.time += 90
-          a()
-          setValue(str)
-          controller.press('Enter')
-          global.performance.time += 90
-          a()
-          setValue(str)
-          controller.press('Enter')
+          if (!str) return;
+          // Open chat
+          controller.press('Enter');
+          global.performance.time += 200;
+          if (typeof a === 'function') a();
+
+          // Type message
+          setValue(str);
+          global.performance.time += 200;
+          if (typeof a === 'function') a();
+
+          // Send message
+          controller.press('Enter');
+          global.performance.time += 200;
+          if (typeof a === 'function') a();
+
+          // Clear input buffer
+          setValue("");
         },
         moveDirection: function (x, y) {
           trigger[x < 0 ? 'keydown' : 'keyup']('KeyA')
@@ -1116,21 +1402,21 @@
       }, block = false
 
       async function waitTime(timeout) {
-          await new Promise(resolve => setTimeout(resolve, timeout));
+        await new Promise(resolve => setTimeout(resolve, timeout));
       }
 
 
       // PATH FIND FUNC
       function getDir(x1, y1, x2, y2) {
-          return Math.atan2(y2 - y1, x2 - x1);
+        return Math.atan2(y2 - y1, x2 - x1);
       }
 
       function randint(a, b) {
-          return Math.floor(Math.random() * (b - a + 1)) + a;
+        return Math.floor(Math.random() * (b - a + 1)) + a;
       }
 
       function choice(array) {
-          return array[randint(0, array.length-1)];
+        return array[randint(0, array.length - 1)];
       }
 
       function stopMoving() {
@@ -1145,35 +1431,35 @@
 
         // Perfect 8-direction movement
         if (angle >= -Math.PI / 8 && angle < Math.PI / 8) {
-            // Right
-            hold["KeyD"] = true;
+          // Right
+          hold["KeyD"] = true;
         } else if (angle >= Math.PI / 8 && angle < 3 * Math.PI / 8) {
-            // Down-Right
-            hold["KeyS"] = true;
-            hold["KeyD"] = true;
+          // Down-Right
+          hold["KeyS"] = true;
+          hold["KeyD"] = true;
         } else if (angle >= 3 * Math.PI / 8 && angle < 5 * Math.PI / 8) {
-            // Down
-            hold["KeyS"] = true;
+          // Down
+          hold["KeyS"] = true;
         } else if (angle >= 5 * Math.PI / 8 && angle < 7 * Math.PI / 8) {
-            // Down-Left
-            hold["KeyS"] = true;
-            hold["KeyA"] = true;
+          // Down-Left
+          hold["KeyS"] = true;
+          hold["KeyA"] = true;
         } else if (angle >= 7 * Math.PI / 8 || angle < -7 * Math.PI / 8) {
-            // Left
-            hold["KeyA"] = true;
+          // Left
+          hold["KeyA"] = true;
         } else if (angle >= -7 * Math.PI / 8 && angle < -5 * Math.PI / 8) {
-            // Up-Left
-            hold["KeyW"] = true;
-            hold["KeyA"] = true;
+          // Up-Left
+          hold["KeyW"] = true;
+          hold["KeyA"] = true;
         } else if (angle >= -5 * Math.PI / 8 && angle < -3 * Math.PI / 8) {
-            // Up
-            hold["KeyW"] = true;
+          // Up
+          hold["KeyW"] = true;
         } else {
-            // Up-Right
-            hold["KeyW"] = true;
-            hold["KeyD"] = true;
+          // Up-Right
+          hold["KeyW"] = true;
+          hold["KeyD"] = true;
         }
-        
+
         for (let key of "WASD") {
           key = "Key" + key;
           trigger[hold[key] ? "keydown" : "keyup"](key);
@@ -1181,15 +1467,24 @@
       }
 
       async function onJoin() {
-        reconnectCount = 0;
+        if (isUpgrading) return;
+        isUpgrading = true;
+        block = true; // Lock movement during upgrade
+        died2 = false; // Prevent fillText from setting hasJoined = true while upgrading
 
-        let waited;
+        // Force coordinates ON immediately so we aren't blind
+        controller.press('KeyL');
+        position[2] = 5;
+
+        reconnectCount = 0;
+        if (config.id === 0) log(`[Bot 0] Joining as: ${target.tank}`);
+
         for (const key of tanks[target.tank].path) {
           if (key === "wait") {
             await waitTime(1000);
           } else if (key instanceof Array) {
             await waitTime(500);
-            controller.click(upgrade_map[key[0]], upgrade_map[key[1]]);
+            await controller.click(upgrade_map[key[0]], upgrade_map[key[1]]);
             await waitTime(500);
           } else {
             controller.press("Key" + key.toUpperCase());
@@ -1207,7 +1502,7 @@
         let i2 = 0;
         for (let i = 1; i <= build.length; i++) {
           const stat = parseInt(build[i2]);
-          
+
           if (i == 10) {
             i = 0;
           }
@@ -1227,7 +1522,20 @@
         }
 
         inGame = true
-        died2 = false
+
+        if (target.autofire) {
+          controller.press("KeyE");
+        }
+        lastAutofire = target.autofire;
+
+        if (target.autospin) {
+          controller.press("KeyC");
+        }
+        lastAutospin = target.autospin;
+
+        block = false; // Unlock movement
+        isUpgrading = false;
+        hasJoined = false; // Clear any queued spawn triggers
       }
 
       const mainInterval = setInterval(function () {
@@ -1263,9 +1571,20 @@
           }
           if (hasJoined) {
             hasJoined = false;
-            fisrtJoin = false;
-            if (tanks instanceof Array && tanks[target.tank].path.find(key => key instanceof Array)) {
-              setTimeout(onJoin, 500);
+
+            if (isUpgrading) return;
+
+            firstJoin = false;
+
+            // Ensure target.tank is valid
+            if (!target.tank || !tanks[target.tank]) {
+              target.tank = 'basic';
+            }
+
+            // If the tank uses coordinate clicks, delay slightly to ensure UI is ready
+            const path = tanks[target.tank].path;
+            if (Array.isArray(path) && path.some(key => Array.isArray(key))) {
+              setTimeout(onJoin, 1200);
             } else {
               onJoin();
             }
@@ -1279,21 +1598,35 @@
             //   controller.chat("#PRAISETHEPRIMORDIALNOOB");
             // }
 
-            if (target.x) {
-              let t = {
-                x: target.x,
-                y: target.y
-              };
+            let moveTarget = { x: 0, y: 0 };
+            let aimTarget = { x: 0, y: 0 };
+            let valid = false;
+
+            if (target.manualMode) {
+              moveTarget.x = aimTarget.x = target.manualX;
+              moveTarget.y = aimTarget.y = target.manualY;
+              valid = true;
+            } else if (target.x !== undefined && target.x !== null) {
+              // Base targets
+              moveTarget.x = target.x;
+              moveTarget.y = target.y;
+              aimTarget.x = target.x + target.mouseX;
+              aimTarget.y = target.y + target.mouseY;
 
               if (target.followMouse) {
-                t.x += target.mouseX;
-                t.y += target.mouseY;
+                // If following mouse, movement target matches aiming target
+                moveTarget.x = aimTarget.x;
+                moveTarget.y = aimTarget.y;
               }
+              valid = true;
+            }
 
-              pathfind(
-                t.x,
-                t.y
-              );
+            if (valid) {
+              if (position[2] > 0) {
+                pathfind(moveTarget.x, moveTarget.y);
+              } else {
+                stopMoving(); // Stay still if we can't see our own coordinates
+              }
 
               let angle;
               if (target.shift) {
@@ -1302,13 +1635,14 @@
                 angle = getDir(
                   position[0],
                   position[1],
-                  target.x + target.mouseX,
-                  target.y + target.mouseY
+                  aimTarget.x,
+                  aimTarget.y
                 );
               }
 
               controller.x = (innerWidth / 2) + Math.cos(angle) * 200;
               controller.y = (innerHeight / 2) + Math.sin(angle) * 200;
+              trigger.mousemove(controller.x, controller.y);
             }
 
             /*if (Math.random() < 0.01) {
@@ -1322,6 +1656,21 @@
 
             controller[target.mouseDown && !target.feed ? "mouseDown" : "mouseUp"]()
             controller[target.rMouseDown && !target.feed ? "mouseDown" : "mouseUp"](2)
+
+            if (target.autofire !== lastAutofire) {
+              controller.press("KeyE");
+              lastAutofire = target.autofire;
+            }
+            if (target.autospin !== lastAutospin) {
+              controller.press("KeyC");
+              lastAutospin = target.autospin;
+            }
+
+            // Chat Spam Logic
+            if (target.chatSpam && Date.now() - lastChatAt > 3000) {
+              lastChatAt = Date.now();
+              controller.chat(target.chatSpam);
+            }
           }
           if (died) {
             inGame = false
@@ -1354,8 +1703,8 @@
               devicePixelRatio = global.window.devicePixelRatio = 1
               if (config.autoRespawn) {
                 //log('Render cache cleared, respawning...')
+                died2 = true;
                 const interv = setInterval(() => {
-                  died2 = true
                   controller.press('Enter')
                   controller.press('Escape')
                   if (!died2) {
@@ -1412,7 +1761,7 @@
             // receiving clientCount instantly to improve network
             return new Promise(resolve => resolve({
               json: async () => {
-                return {"ok": true, "clients": 7777}
+                return { "ok": true, "clients": 7777 }
               }
             }));
           }
@@ -1420,23 +1769,38 @@
           const fetchPromise = Reflect.apply(a, b, args);
 
           if (url.endsWith('/status')) {
-            fetchPromise.then(response => {
-              return response.clone().json();
-            }).then(i => {
-              if (i.ok && i.status) {
-                statusRecieved = true;
-                status = Object.values(i.status);
-                //log('Status recieved and processed.');
+            return fetchPromise.then(async response => {
+              const contentType = response.headers.get('content-type');
+              if (contentType && contentType.includes('application/json')) {
+                // It's JSON, process it and return the original response
+                const cloned = response.clone();
+                cloned.json().then(i => {
+                  if (i.ok && i.status) {
+                    statusRecieved = true;
+                    status = Object.values(i.status);
+                  }
+                }).catch(() => { });
+                return response;
               } else {
-                log('Status error.');
+                // Not JSON (probably HTML/404), return a fake JSON response to prevent client crash
+                log(`Warning: /status returned non-JSON content from ${url}. Returning mock JSON.`);
+                return {
+                  ok: true,
+                  status: 200,
+                  headers: new Map([['content-type', 'application/json']]),
+                  json: async () => ({ ok: false, status: {} }),
+                  text: async () => JSON.stringify({ ok: false, status: {} }),
+                  arrayBuffer: async () => Buffer.from(JSON.stringify({ ok: false, status: {} })),
+                  clone: function () { return this; }
+                };
               }
             }).catch(err => {
-              log(`Failed to process status JSON (${url}):`, err);
-              return new Promise(resolve => resolve({
-                json: async () => {
-                  return {"ok": false}
-                }
-              }));
+              log(`Failed to fetch status (${url}):`, err);
+              return {
+                ok: false,
+                json: async () => ({ ok: false }),
+                clone: function () { return this; }
+              };
             });
           }
 
@@ -1580,17 +1944,21 @@
       target.feed = message.feeding;
 
       target.shift = message.shift;
+
+      target.autofire = message.autofire;
+      target.autospin = message.autospin;
+
+      target.manualMode = message.manualMode;
+      target.manualX = message.manualX;
+      target.manualY = message.manualY;
     } else if (message.type == 'tankselect') {
       target.tank = message.tank;
-    } else if (message.type === 'chat') {
-      // Make the bot say something in-game chat
-      if (currentBotInterface && currentBotInterface.chat) {
-        currentBotInterface.chat(String(message.text || '').slice(0, 120));
-      }
-    } else if (message.type === 'chat') {
-      // Make a bot say something in-game
-      if (currentBotInterface && currentBotInterface.chat) {
-        currentBotInterface.chat(String(message.text || '').slice(0, 120));
+    } else if (message.type == 'chat') {
+      target.chatSpam = message.spam ? message.message : "";
+      if (message.message && !message.spam) {
+        if (inGame && currentBotInterface.controller && currentBotInterface.controller.chat) {
+          currentBotInterface.controller.chat(message.message);
+        }
       }
     } else if (message.type == 'destroy') {
       console.log("why devastatee");
