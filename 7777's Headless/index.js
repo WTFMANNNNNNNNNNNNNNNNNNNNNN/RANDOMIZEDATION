@@ -1954,10 +1954,16 @@
     } else if (message.type == 'tankselect') {
       target.tank = message.tank;
     } else if (message.type == 'chat') {
-      target.chatSpam = message.spam ? message.message : "";
-      if (message.message && !message.spam) {
-        if (inGame && currentBotInterface.controller && currentBotInterface.controller.chat) {
-          currentBotInterface.controller.chat(message.message);
+      // spam=true sets chatSpam (bots repeat every 3s); empty message clears it
+      // spam=false sends a one-shot chat message immediately
+      if (message.spam) {
+        target.chatSpam = message.message || "";
+      } else {
+        target.chatSpam = "";
+        if (message.message) {
+          if (currentBotInterface.controller && currentBotInterface.controller.chat) {
+            currentBotInterface.controller.chat(message.message);
+          }
         }
       }
     } else if (message.type == 'destroy') {
